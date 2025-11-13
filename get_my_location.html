@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Get My Location</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 40px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 12px;
+        max-width: 400px;
+        margin: auto;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      button {
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background-color: #0078d4;
+        color: white;
+      }
+      button:hover {
+        background-color: #005ea3;
+      }
+      #coords {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+      .copy-btn {
+        margin-top: 8px;
+        padding: 8px 12px;
+        border: none;
+        background: #333;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .copy-btn:hover {
+        background: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Your Current Location</h2>
+      <button onclick="getLocation()">Get My Location</button>
+      <p id="coords"></p>
+      <button class="copy-btn" onclick="copyCoords()">Copy Coordinates</button>
+    </div>
+
+    <script>
+      let latestCoords = "";
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+          document.getElementById("coords").innerHTML = "Geolocation is not supported.";
+        }
+      }
+
+      function showPosition(position) {
+        latestCoords =
+          "Latitude: " + position.coords.latitude +
+          "\nLongitude: " + position.coords.longitude;
+
+        document.getElementById("coords").innerHTML =
+          "Latitude: " + position.coords.latitude +
+          "<br>Longitude: " + position.coords.longitude;
+      }
+
+      function showError() {
+        document.getElementById("coords").innerHTML =
+          "Unable to get location. Please allow location access.";
+      }
+
+      function copyCoords() {
+        if (!latestCoords) {
+          alert("No coordinates to copy yet.");
+          return;
+        }
+        navigator.clipboard.writeText(latestCoords);
+        alert("Coordinates copied!");
+      }
+    </script>
+  </body>
+</html>
