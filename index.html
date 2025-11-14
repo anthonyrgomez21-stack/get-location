@@ -1,94 +1,218 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Get My Location</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 40px;
-        background-color: #f4f4f4;
-      }
-      .container {
-        background: white;
-        padding: 20px 30px;
-        border-radius: 12px;
-        max-width: 400px;
-        margin: auto;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      }
-      button {
-        padding: 12px 20px;
-        font-size: 16px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        background-color: #0078d4;
-        color: white;
-      }
-      button:hover {
-        background-color: #005ea3;
-      }
-      #coords {
-        margin-top: 20px;
-        font-size: 18px;
-      }
-      .copy-btn {
-        margin-top: 8px;
-        padding: 8px 12px;
-        border: none;
-        background: #333;
-        color: white;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      .copy-btn:hover {
-        background: #111;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h2>Your Current Location</h2>
-      <button onclick="getLocation()">Get My Location</button>
-      <p id="coords"></p>
-      <button class="copy-btn" onclick="copyCoords()">Copy Coordinates</button>
-    </div>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Equipment Geo Locator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #0a1a33;
+    }
 
-    <script>
-      let latestCoords = "";
+    .header {
+      text-align: center;
+      margin-top: 30px;
+    }
 
-      function getLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else {
-          document.getElementById("coords").innerHTML = "Geolocation is not supported.";
-        }
+    .header img {
+      width: 140px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-top: 10px;
+      color: #b22222;
+      -webkit-text-stroke: 0.4px white;
+      text-shadow: none;
+    }
+
+    .subtitle {
+      font-size: 22px;
+      font-weight: 600;
+      color: #0a1a33;
+      margin-bottom: 30px;
+      -webkit-text-stroke: 0.35px white;
+      text-shadow: none;
+    }
+
+    .card {
+      background: white;
+      width: 90%;
+      max-width: 450px;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    label {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    input, select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      width: 100%;
+    }
+
+    button {
+      margin-top: 10px;
+      background: #b22222;
+      color: white;
+      padding: 14px;
+      border: none;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #8d1a1a;
+    }
+
+    .output {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      width: 90%;
+      max-width: 450px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: none;
+      font-size: 16px;
+    }
+
+      @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+  #loadingScreen { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.55); backdrop-filter:blur(3px); align-items:center; justify-content:center; z-index:9999; }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+  /* Dark mode styles */
+    body.dark {
+      background:#0a1a33;
+      color:white;
+    }
+    .card.dark {
+      background:#12203f;
+      color:white;
+    }
+    .output.dark {
+      background:#12203f;
+      color:white;
+    }
+  </style>
+</head>
+<body>
+  <button id="darkToggle" onclick="toggleDark()" style="position:fixed; top:15px; right:15px; width:38px; height:38px; background:#0a1a33; color:white; border:none; border-radius:50%; cursor:pointer; font-weight:600; z-index:10000; display:flex; align-items:center; justify-content:center; font-size:14px;">🌙</button>
+
+  <div class="header">
+    
+    <div class="title">EQUIPMENT</div>
+    <div class="subtitle">GEO LOCATOR</div>
+  </div>
+
+  <div class="card">
+    <label>Select Equipment Type</label>
+    <select id="equipmentType">
+      <option value="Excavator">Excavator</option>
+      <option value="Loader">Loader</option>
+      <option value="Dozer">Dozer</option>
+      <option value="Truck">Truck</option>
+    </select>
+
+    <label>Radius (ft)</label>
+    <input type="number" id="radius" placeholder="Enter radius" />
+
+    <label>Location</label>
+    <button type="button" onclick="getLocation()" style="background:#0a1a33;margin-bottom:8px;">Use Current Location</button>
+
+    <label>Latitude</label>
+    <input type="text" id="latitude" placeholder="Auto-fill or enter manually" />
+
+    <label style="margin-top:6px;">Longitude</label>
+    <input type="text" id="longitude" placeholder="Auto-fill or enter manually" type="text" id="longitude" placeholder="Auto-filled or enter" />
+
+    <button onclick="submitData()">Submit</button>
+  </div>
+
+  <div class="output" id="outputBox"></div>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          document.getElementById('latitude').value = pos.coords.latitude;
+          document.getElementById('longitude').value = pos.coords.longitude;
+        }, () => alert('Unable to get location.'));
+      } else {
+        alert('Geolocation not supported.');
+      }
+    }
+
+    function submitData() {
+      const type = document.getElementById('equipmentType').value;
+      const lat = document.getElementById('latitude').value.trim();
+      const lon = document.getElementById('longitude').value.trim();
+      const rad = document.getElementById('radius').value.trim();
+
+      if (!rad || isNaN(rad) || rad <= 0) {
+        alert('⚠️ Please enter a valid radius.');
+        return;
+      }
+      if (!lat || isNaN(lat)) {
+        alert('⚠️ Please enter a valid latitude.');
+        return;
+      }
+      if (!lon || isNaN(lon)) {
+        alert('⚠️ Please enter a valid longitude.');
+        return;
       }
 
-      function showPosition(position) {
-        latestCoords =
-          "Latitude: " + position.coords.latitude +
-          "\nLongitude: " + position.coords.longitude;
+      document.getElementById('loadingScreen').style.display='flex';
+      const box = document.getElementById('outputBox');
+      setTimeout(() => { document.getElementById('loadingScreen').style.display='none'; box.style.display = 'block';
+      box.style.borderLeft = '6px solid #2e8b57';
+      box.innerHTML = `
+        <strong style="color:#2e8b57; font-size:18px;">✓ Data Sent Successfully</strong><br><br>
+        Equipment Type: ${type}<br>
+        Latitude: ${lat}<br>
+        Longitude: ${lon}<br>
+        Radius: ${rad} ft
+      `;
+      }, 1200);
+    }
 
-        document.getElementById("coords").innerHTML =
-          "Latitude: " + position.coords.latitude +
-          "<br>Longitude: " + position.coords.longitude;
-      }
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      document.querySelector('.card').classList.toggle('dark');
+      document.getElementById('outputBox').classList.toggle('dark');
+    }
 
-      function showError() {
-        document.getElementById("coords").innerHTML =
-          "Unable to get location. Please allow location access.";
-      }
+    function resetForm() {
+      document.getElementById('equipmentType').selectedIndex = 0;
+      document.getElementById('radius').value = '';
+      document.getElementById('latitude').value = '';
+      document.getElementById('longitude').value = '';
+      document.getElementById('outputBox').style.display = 'none';
+    }
+  </script>
 
-      function copyCoords() {
-        if (!latestCoords) {
-          alert("No coordinates to copy yet.");
-          return;
-        }
-        navigator.clipboard.writeText(latestCoords);
-        alert("Coordinates copied!");
-      }
-    </script>
-  </body>
+  <div id="loadingScreen">
+    <div style="border:6px solid #ffffff; border-top:6px solid #b22222; border-radius:50%; width:60px; height:60px; animation:spin 1s linear infinite;"></div>
+  </div>
+  </div>
+</body>
 </html>
