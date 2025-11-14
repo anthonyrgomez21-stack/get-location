@@ -97,29 +97,47 @@
       font-size: 16px;
     }
 
-      @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
-  #loadingScreen { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.55); backdrop-filter:blur(3px); align-items:center; justify-content:center; z-index:9999; }
-    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
-  /* Dark mode styles */
+    @keyframes spin { 
+      0% { transform: rotate(0deg);} 
+      100% { transform: rotate(360deg);} 
+    }
+
+    #loadingScreen { 
+      display:none; 
+      position:fixed; 
+      top:0; 
+      left:0; 
+      width:100%; 
+      height:100%; 
+      background:rgba(0,0,0,0.55); 
+      backdrop-filter:blur(3px); 
+      align-items:center; 
+      justify-content:center; 
+      z-index:9999; 
+    }
+
+    /* Dark mode styles */
     body.dark {
       background:#0a1a33;
       color:white;
     }
+
     .card.dark {
       background:#12203f;
       color:white;
     }
+
     .output.dark {
       background:#12203f;
       color:white;
     }
   </style>
 </head>
+
 <body>
   <button id="darkToggle" onclick="toggleDark()" style="position:fixed; top:15px; right:15px; width:38px; height:38px; background:#0a1a33; color:white; border:none; border-radius:50%; cursor:pointer; font-weight:600; z-index:10000; display:flex; align-items:center; justify-content:center; font-size:14px;">🌙</button>
 
   <div class="header">
-    
     <div class="title">EQUIPMENT</div>
     <div class="subtitle">GEO LOCATOR</div>
   </div>
@@ -127,10 +145,113 @@
   <div class="card">
     <label>Select Equipment Type</label>
     <select id="equipmentType">
-      <option value="Excavator">Excavator</option>
-      <option value="Loader">Loader</option>
-      <option value="Dozer">Dozer</option>
-      <option value="Truck">Truck</option>
+      <option value="ACTUATOR">ACTUATOR</option>
+      <option value="AERATOR">AERATOR</option>
+      <option value="ALARM">ALARM</option>
+      <option value="ANCILLARY">ANCILLARY</option>
+      <option value="ARRESTER">ARRESTER</option>
+      <option value="BATTERY">BATTERY</option>
+      <option value="BLIND">BLIND</option>
+      <option value="BLOWER AND FANS">BLOWER AND FANS</option>
+      <option value="BOAT & BARGE">BOAT & BARGE</option>
+      <option value="BREAKER">BREAKER</option>
+      <option value="BUILDING">BUILDING</option>
+      <option value="BURNER">BURNER</option>
+      <option value="CATHODIC PROT">CATHODIC PROT</option>
+      <option value="CENTRIFUGE">CENTRIFUGE</option>
+      <option value="COMBUSTION ENGINE">COMBUSTION ENGINE</option>
+      <option value="COMPRESSOR">COMPRESSOR</option>
+      <option value="CONVEYOR ELEVATOR">CONVEYOR ELEVATOR</option>
+      <option value="CONTROL VALVE">CONTROL VALVE</option>
+      <option value="CONTROLLER">CONTROLLER</option>
+      <option value="COOLING TOWER">COOLING TOWER</option>
+      <option value="CRANE">CRANE</option>
+      <option value="DECK EQUIPMENT">DECK EQUIPMENT</option>
+      <option value="DOCK EQUIPMENT">DOCK EQUIPMENT</option>
+      <option value="DRYER">DRYER</option>
+      <option value="EARTHWORKS">EARTHWORKS</option>
+      <option value="ELECTRIC GENERATOR">ELECTRIC GENERATOR</option>
+      <option value="ELECTRICAL DISTRIB">ELECTRICAL DISTRIB</option>
+      <option value="ELECTRICAL EXTRAS">ELECTRICAL EXTRAS</option>
+      <option value="ELEMENT">ELEMENT</option>
+      <option value="EMERGENCY COMM EQUIP">EMERGENCY COMM EQUIP</option>
+      <option value="ENCLOSURE">ENCLOSURE</option>
+      <option value="ESCAPE, EVAC, & RESCUE">ESCAPE, EVAC, & RESCUE</option>
+      <option value="EXCAVATOR">EXCAVATOR</option>
+      <option value="EXCITER">EXCITER</option>
+      <option value="FEEDER">FEEDER</option>
+      <option value="FIRE & GAS DETECTORS">FIRE & GAS DETECTORS</option>
+      <option value="FIRE-FIGHTING EQUIP">FIRE-FIGHTING EQUIP</option>
+      <option value="FORKLIFT">FORKLIFT</option>
+      <option value="GAUGE">GAUGE</option>
+      <option value="GEARBOX">GEARBOX</option>
+      <option value="GOVERNOR">GOVERNOR</option>
+      <option value="GRADER">GRADER</option>
+      <option value="HEAT EXCHANGER">HEAT EXCHANGER</option>
+      <option value="HEATER & BOILER">HEATER & BOILER</option>
+      <option value="HOIST BLOCK">HOIST BLOCK</option>
+      <option value="HOPPER">HOPPER</option>
+      <option value="HOSE">HOSE</option>
+      <option value="HVAC EQUIP">HVAC EQUIP</option>
+      <option value="INDICATOR">INDICATOR</option>
+      <option value="INJECTOR">INJECTOR</option>
+      <option value="INSTRUMENT EXTRAS">INSTRUMENT EXTRAS</option>
+      <option value="LAB">LAB</option>
+      <option value="LIFTING">LIFTING</option>
+      <option value="LOADER">LOADER</option>
+      <option value="LOADING ARMS">LOADING ARMS</option>
+      <option value="LOGIC CNTRL">LOGIC CNTRL</option>
+      <option value="LOOP">LOOP</option>
+      <option value="MARINE EXTRAS">MARINE EXTRAS</option>
+      <option value="METER">METER</option>
+      <option value="MILL">MILL</option>
+      <option value="MIXER">MIXER</option>
+      <option value="MOTOR">MOTOR</option>
+      <option value="MOTOR STARTER">MOTOR STARTER</option>
+      <option value="MULTI INPUT DEVICE">MULTI INPUT DEVICE</option>
+      <option value="NAVIGATION EQUIP">NAVIGATION EQUIP</option>
+      <option value="NULL">NULL</option>
+      <option value="ORIFICE">ORIFICE</option>
+      <option value="PIPING">PIPING</option>
+      <option value="PIPING EXTRAS">PIPING EXTRAS</option>
+      <option value="POWER SUPPLY">POWER SUPPLY</option>
+      <option value="POWER TRANSFORMER">POWER TRANSFORMER</option>
+      <option value="PRESSURE VESSEL">PRESSURE VESSEL</option>
+      <option value="PROCESS UNIT">PROCESS UNIT</option>
+      <option value="PROVER">PROVER</option>
+      <option value="PUMP">PUMP</option>
+      <option value="RECORDER">RECORDER</option>
+      <option value="RECTIFIER">RECTIFIER</option>
+      <option value="REGENERATOR">REGENERATOR</option>
+      <option value="REGULATOR">REGULATOR</option>
+      <option value="RELIEF DEVICE">RELIEF DEVICE</option>
+      <option value="RELAY">RELAY</option>
+      <option value="ROTATING EXTRAS">ROTATING EXTRAS</option>
+      <option value="SAFETY & SECURITY">SAFETY & SECURITY</option>
+      <option value="SCBA">SCBA</option>
+      <option value="SHAFT & UNDERWATER">SHAFT & UNDERWATER</option>
+      <option value="SNOW CAT">SNOW CAT</option>
+      <option value="SOLENOID">SOLENOID</option>
+      <option value="STACK">STACK</option>
+      <option value="STORAGE TANK">STORAGE TANK</option>
+      <option value="SWITCH">SWITCH</option>
+      <option value="SWITCHGEAR">SWITCHGEAR</option>
+      <option value="TELECOMM">TELECOMM</option>
+      <option value="TEST EQUIP">TEST EQUIP</option>
+      <option value="THERMOWELL">THERMOWELL</option>
+      <option value="TRACTOR">TRACTOR</option>
+      <option value="TRANSDUCER">TRANSDUCER</option>
+      <option value="TRANSMITTER">TRANSMITTER</option>
+      <option value="TRAILER">TRAILER</option>
+      <option value="TRUCK">TRUCK</option>
+      <option value="TURBINE">TURBINE</option>
+      <option value="VALVE">VALVE</option>
+      <option value="VARIABLE DRIVE">VARIABLE DRIVE</option>
+      <option value="VEHICLE">VEHICLE</option>
+      <option value="WASTE OIL SYSTEM">WASTE OIL SYSTEM</option>
+      <option value="WEIGHBRIDGE">WEIGHBRIDGE</option>
+      <option value="WINCH">WINCH</option>
+      <option value="WORKSHOP">WORKSHOP</option>
     </select>
 
     <label>Radius (ft)</label>
@@ -143,7 +264,7 @@
     <input type="text" id="latitude" placeholder="Auto-fill or enter manually" />
 
     <label style="margin-top:6px;">Longitude</label>
-    <input type="text" id="longitude" placeholder="Auto-fill or enter manually" type="text" id="longitude" placeholder="Auto-filled or enter" />
+    <input type="text" id="longitude" placeholder="Auto-fill or enter manually" />
 
     <button onclick="submitData()">Submit</button>
   </div>
@@ -183,15 +304,18 @@
 
       document.getElementById('loadingScreen').style.display='flex';
       const box = document.getElementById('outputBox');
-      setTimeout(() => { document.getElementById('loadingScreen').style.display='none'; box.style.display = 'block';
-      box.style.borderLeft = '6px solid #2e8b57';
-      box.innerHTML = `
-        <strong style="color:#2e8b57; font-size:18px;">✓ Data Sent Successfully</strong><br><br>
-        Equipment Type: ${type}<br>
-        Latitude: ${lat}<br>
-        Longitude: ${lon}<br>
-        Radius: ${rad} ft
-      `;
+
+      setTimeout(() => { 
+        document.getElementById('loadingScreen').style.display='none'; 
+        box.style.display = 'block';
+        box.style.borderLeft = '6px solid #2e8b57';
+        box.innerHTML = `
+          <strong style="color:#2e8b57; font-size:18px;">✓ Data Sent Successfully</strong><br><br>
+          Equipment Type: ${type}<br>
+          Latitude: ${lat}<br>
+          Longitude: ${lon}<br>
+          Radius: ${rad} ft
+        `;
       }, 1200);
     }
 
@@ -213,6 +337,6 @@
   <div id="loadingScreen">
     <div style="border:6px solid #ffffff; border-top:6px solid #b22222; border-radius:50%; width:60px; height:60px; animation:spin 1s linear infinite;"></div>
   </div>
-  </div>
+
 </body>
 </html>
