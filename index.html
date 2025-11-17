@@ -79,6 +79,18 @@
       background: #8d1a1a;
     }
 
+    .output {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      width: 90%;
+      max-width: 450px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: none;
+      font-size: 16px;
+    }
+
     #loadingScreen { 
       display:none; 
       position:fixed; 
@@ -96,7 +108,7 @@
       100% { transform: rotate(360deg);}
     }
     body.dark { background:#0a1a33; color:white; }
-    .card.dark { background:#12203f; color:white; }
+    .card.dark, .output.dark { background:#12203f; color:white; }
   </style>
 </head>
 
@@ -116,6 +128,7 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
 
 <div class="card">
 
+  <!-- SEARCH BAR -->
   <label>Select Equipment Type</label>
   <input 
     type="text" 
@@ -125,83 +138,108 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
     style="padding:10px; border:1px solid #ccc; border-radius:8px; margin-bottom:5px;"
   >
 
+  <!-- DROPDOWN LIST -->
   <select id="equipmentType" size="6" style="height:160px; overflow-y:auto;">
-    <!-- (ALL YOUR OPTIONS HERE — unchanged) -->
     <option value="ACTUATOR">ACTUATOR</option>
-    <!-- ... -->
-    <option value="WORKSHOP">WORKSHOP</option>
-  </select>
-
-  <label>Radius (ft)</label>
-  <input type="number" id="radius" placeholder="Enter radius" />
-
-  <label>Location</label>
-  <button type="button" onclick="getLocation()" style="background:#0a1a33;margin-bottom:8px;">Use Current Location</button>
-
-  <label>Latitude</label>
-  <input type="text" id="latitude" placeholder="Auto-fill or enter manually" />
-
-  <label>Longitude</label>
-  <input type="text" id="longitude" placeholder="Auto-fill or enter manually" />
-
-  <button onclick="submitData()">Submit</button>
-</div>
-
-<script>
-  function filterEquipment() {
-    const search = document.getElementById("equipmentSearch").value.toUpperCase();
-    const select = document.getElementById("equipmentType");
-    const options = select.getElementsByTagName("option");
-
-    for (let i = 0; i < options.length; i++) {
-      const txt = options[i].textContent || options[i].innerText;
-      options[i].style.display = txt.toUpperCase().includes(search) ? "" : "none";
-    }
-  }
-
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        document.getElementById('latitude').value = pos.coords.latitude;
-        document.getElementById('longitude').value = pos.coords.longitude;
-      }, () => alert('Unable to get location.'));
-    } else {
-      alert('Geolocation not supported.');
-    }
-  }
-
-  function submitData() {
-    const type = document.getElementById('equipmentType').value;
-    const lat = document.getElementById('latitude').value.trim();
-    const lon = document.getElementById('longitude').value.trim();
-    const rad = document.getElementById('radius').value.trim();
-
-    if (!rad || isNaN(rad) || rad <= 0) return alert('⚠️ Please enter a valid radius.');
-    if (!lat || isNaN(lat)) return alert('⚠️ Please enter a valid latitude.');
-    if (!lon || isNaN(lon)) return alert('⚠️ Please enter a valid longitude.');
-
-    // ⭐ REDIRECT BACK TO YOUR COPILOT AGENT WITH QUERY PARAMETERS ⭐
-    const baseUrl = "https://copilotstudio.microsoft.com/environments/dd194fd0-e8e2-e02f-a14e-e7d710d3e313/copilots/fab4cfcf-f2b0-f011-bbd3-000d3a5be6d1/test";
-
-    const returnUrl =
-      baseUrl
-      + "?type=" + encodeURIComponent(type)
-      + "&lat=" + encodeURIComponent(lat)
-      + "&lon=" + encodeURIComponent(lon)
-      + "&radius=" + encodeURIComponent(rad);
-
-    window.location.href = returnUrl;
-  }
-
-  function toggleDark() {
-    document.body.classList.toggle('dark');
-    document.querySelector('.card').classList.toggle('dark');
-  }
-</script>
-
-<div id="loadingScreen">
-  <div style="border:6px solid #ffffff; border-top:6px solid #b22222; border-radius:50%; width:60px; height:60px; animation:spin 1s linear infinite;"></div>
-</div>
-
-</body>
-</html>
+    <option value="AERATOR">AERATOR</option>
+    <option value="ALARM">ALARM</option>
+    <option value="ANCILLARY">ANCILLARY</option>
+    <option value="ARRESTER">ARRESTER</option>
+    <option value="BATTERY">BATTERY</option>
+    <option value="BLIND">BLIND</option>
+    <option value="BLOWER AND FANS">BLOWER AND FANS</option>
+    <option value="BOAT & BARGE">BOAT & BARGE</option>
+    <option value="BREAKER">BREAKER</option>
+    <option value="BUILDING">BUILDING</option>
+    <option value="BURNER">BURNER</option>
+    <option value="CATHODIC PROT">CATHODIC PROT</option>
+    <option value="CENTRIFUGE">CENTRIFUGE</option>
+    <option value="COMBUSTION ENGINE">COMBUSTION ENGINE</option>
+    <option value="COMPRESSOR">COMPRESSOR</option>
+    <option value="CONVEYOR ELEVATOR">CONVEYOR ELEVATOR</option>
+    <option value="CONTROL VALVE">CONTROL VALVE</option>
+    <option value="CONTROLLER">CONTROLLER</option>
+    <option value="COOLING TOWER">COOLING TOWER</option>
+    <option value="CRANE">CRANE</option>
+    <option value="DECK EQUIPMENT">DECK EQUIPMENT</option>
+    <option value="DOCK EQUIPMENT">DOCK EQUIPMENT</option>
+    <option value="DRYER">DRYER</option>
+    <option value="EARTHWORKS">EARTHWORKS</option>
+    <option value="ELECTRIC GENERATOR">ELECTRIC GENERATOR</option>
+    <option value="ELECTRICAL DISTRIB">ELECTRICAL DISTRIB</option>
+    <option value="ELECTRICAL EXTRAS">ELECTRICAL EXTRAS</option>
+    <option value="ELEMENT">ELEMENT</option>
+    <option value="EMERGENCY COMM EQUIP">EMERGENCY COMM EQUIP</option>
+    <option value="ENCLOSURE">ENCLOSURE</option>
+    <option value="ESCAPE, EVAC, & RESCUE">ESCAPE, EVAC, & RESCUE</option>
+    <option value="EXCAVATOR">EXCAVATOR</option>
+    <option value="EXCITER">EXCITER</option>
+    <option value="FEEDER">FEEDER</option>
+    <option value="FIRE & GAS DETECTORS">FIRE & GAS DETECTORS</option>
+    <option value="FIRE-FIGHTING EQUIP">FIRE-FIGHTING EQUIP</option>
+    <option value="FORKLIFT">FORKLIFT</option>
+    <option value="GAUGE">GAUGE</option>
+    <option value="GEARBOX">GEARBOX</option>
+    <option value="GOVERNOR">GOVERNOR</option>
+    <option value="GRADER">GRADER</option>
+    <option value="HEAT EXCHANGER">HEAT EXCHANGER</option>
+    <option value="HEATER & BOILER">HEATER & BOILER</option>
+    <option value="HOIST BLOCK">HOIST BLOCK</option>
+    <option value="HOPPER">HOPPER</option>
+    <option value="HOSE">HOSE</option>
+    <option value="HVAC EQUIP">HVAC EQUIP</option>
+    <option value="INDICATOR">INDICATOR</option>
+    <option value="INJECTOR">INJECTOR</option>
+    <option value="INSTRUMENT EXTRAS">INSTRUMENT EXTRAS</option>
+    <option value="LAB">LAB</option>
+    <option value="LIFTING">LIFTING</option>
+    <option value="LOADER">LOADER</option>
+    <option value="LOADING ARMS">LOADING ARMS</option>
+    <option value="LOGIC CNTRL">LOGIC CNTRL</option>
+    <option value="LOOP">LOOP</option>
+    <option value="MARINE EXTRAS">MARINE EXTRAS</option>
+    <option value="METER">METER</option>
+    <option value="MILL">MILL</option>
+    <option value="MIXER">MIXER</option>
+    <option value="MOTOR">MOTOR</option>
+    <option value="MOTOR STARTER">MOTOR STARTER</option>
+    <option value="MULTI INPUT DEVICE">MULTI INPUT DEVICE</option>
+    <option value="NAVIGATION EQUIP">NAVIGATION EQUIP</option>
+    <option value="NULL">NULL</option>
+    <option value="ORIFICE">ORIFICE</option>
+    <option value="PIPING">PIPING</option>
+    <option value="PIPING EXTRAS">PIPING EXTRAS</option>
+    <option value="POWER SUPPLY">POWER SUPPLY</option>
+    <option value="POWER TRANSFORMER">POWER TRANSFORMER</option>
+    <option value="PRESSURE VESSEL">PRESSURE VESSEL</option>
+    <option value="PROCESS UNIT">PROCESS UNIT</option>
+    <option value="PROVER">PROVER</option>
+    <option value="PUMP">PUMP</option>
+    <option value="RECORDER">RECORDER</option>
+    <option value="RECTIFIER">RECTIFIER</option>
+    <option value="REGENERATOR">REGENERATOR</option>
+    <option value="REGULATOR">REGULATOR</option>
+    <option value="RELIEF DEVICE">RELIEF DEVICE</option>
+    <option value="RELAY">RELAY</option>
+    <option value="ROTATING EXTRAS">ROTATING EXTRAS</option>
+    <option value="SAFETY & SECURITY">SAFETY & SECURITY</option>
+    <option value="SCBA">SCBA</option>
+    <option value="SHAFT & UNDERWATER">SHAFT & UNDERWATER</option>
+    <option value="SNOW CAT">SNOW CAT</option>
+    <option value="SOLENOID">SOLENOID</option>
+    <option value="STACK">STACK</option>
+    <option value="STORAGE TANK">STORAGE TANK</option>
+    <option value="SWITCH">SWITCH</option>
+    <option value="SWITCHGEAR">SWITCHGEAR</option>
+    <option value="TELECOMM">TELECOMM</option>
+    <option value="TEST EQUIP">TEST EQUIP</option>
+    <option value="THERMOWELL">THERMOWELL</option>
+    <option value="TRACTOR">TRACTOR</option>
+    <option value="TRANSDUCER">TRANSDUCER</option>
+    <option value="TRANSMITTER">TRANSMITTER</option>
+    <option value="TRAILER">TRAILER</option>
+    <option value="TRUCK">TRUCK</option>
+    <option value="TURBINE">TURBINE</option>
+    <option value="VALVE">VALVE</option>
+    <option value="VARIABLE DRIVE">VARIABLE DRIVE</option>
+    <option
