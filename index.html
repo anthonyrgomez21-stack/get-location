@@ -140,6 +140,7 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
 
   <!-- DROPDOWN LIST -->
   <select id="equipmentType" size="6" style="height:160px; overflow-y:auto;">
+    <!-- OPTIONS INSERTED BELOW (ALPHABETICAL) -->
     <option value="ACTUATOR">ACTUATOR</option>
     <option value="AERATOR">AERATOR</option>
     <option value="ALARM">ALARM</option>
@@ -242,4 +243,86 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
     <option value="TURBINE">TURBINE</option>
     <option value="VALVE">VALVE</option>
     <option value="VARIABLE DRIVE">VARIABLE DRIVE</option>
-    <option
+    <option value="VEHICLE">VEHICLE</option>
+    <option value="WASTE OIL SYSTEM">WASTE OIL SYSTEM</option>
+    <option value="WEIGHBRIDGE">WEIGHBRIDGE</option>
+    <option value="WINCH">WINCH</option>
+    <option value="WORKSHOP">WORKSHOP</option>
+  </select>
+
+  <label>Radius (ft)</label>
+  <input type="number" id="radius" placeholder="Enter radius" />
+
+  <label>Location</label>
+  <button type="button" onclick="getLocation()" style="background:#0a1a33;margin-bottom:8px;">Use Current Location</button>
+
+  <label>Latitude</label>
+  <input type="text" id="latitude" placeholder="Auto-fill or enter manually" />
+
+  <label>Longitude</label>
+  <input type="text" id="longitude" placeholder="Auto-fill or enter manually" />
+
+ <button onclick="submitData()">Submit</button>
+</div>
+
+<div class="output" id="outputBox"></div>
+
+<script>
+  function filterEquipment() {
+    const search = document.getElementById("equipmentSearch").value.toUpperCase();
+    const select = document.getElementById("equipmentType");
+    const options = select.getElementsByTagName("option");
+
+    for (let i = 0; i < options.length; i++) {
+      const txt = options[i].textContent || options[i].innerText;
+      options[i].style.display = txt.toUpperCase().includes(search) ? "" : "none";
+    }
+  }
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        document.getElementById('latitude').value = pos.coords.latitude;
+        document.getElementById('longitude').value = pos.coords.longitude;
+      }, () => alert('Unable to get location.'));
+    } else {
+      alert('Geolocation not supported.');
+    }
+  }
+
+  // ⭐ UPDATED submitData() — sends values BACK into Copilot
+  function submitData() {
+    const type = document.getElementById('equipmentType').value;
+    const lat = document.getElementById('latitude').value.trim();
+    const lon = document.getElementById('longitude').value.trim();
+    const rad = document.getElementById('radius').value.trim();
+
+    if (!rad || isNaN(rad) || rad <= 0) return alert('⚠️ Please enter a valid radius.');
+    if (!lat || isNaN(lat)) return alert('⚠️ Please enter a valid latitude.');
+    if (!lon || isNaN(lon)) return alert('⚠️ Please enter a valid longitude.');
+
+    // ⭐ Your Copilot return URL (same conversation)
+    const returnUrl =
+      "https://copilotstudio.microsoft.com/environments/dd194fd0-e8e2-e02f-a14e-e7d710d3e313/copilots/fab4cfcf-f2b0-f011-bbd3-000d3a5be6d1/test"
+      + "?type=" + encodeURIComponent(type)
+      + "&lat=" + encodeURIComponent(lat)
+      + "&lon=" + encodeURIComponent(lon)
+      + "&radius=" + encodeURIComponent(rad);
+
+    // ⭐ Redirect user back to Copilot
+    window.location.href = returnUrl;
+  }
+
+  function toggleDark() {
+    document.body.classList.toggle('dark');
+    document.querySelector('.card').classList.toggle('dark');
+    document.getElementById('outputBox').classList.toggle('dark');
+  }
+</script>
+
+<div id="loadingScreen">
+  <div style="border:6px solid #ffffff; border-top:6px solid #b22222; border-radius:50%; width:60px; height:60px; animation:spin 1s linear infinite;"></div>
+</div>
+
+</body>
+</html>
