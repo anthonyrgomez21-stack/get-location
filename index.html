@@ -262,7 +262,7 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
   <label>Longitude</label>
   <input type="text" id="longitude" placeholder="Auto-fill or enter manually" />
 
- <button onclick="submitData()">Submit</button>
+  <button onclick="submitData()">Submit</button>
 </div>
 
 <div class="output" id="outputBox"></div>
@@ -279,6 +279,12 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
     }
   }
 
+  // ⭐ NEW: Make clicking an item in the list actually set the selected value
+  document.getElementById("equipmentType").addEventListener("change", () => {
+    const select = document.getElementById("equipmentType");
+    select.value = select.options[select.selectedIndex].value;
+  });
+
   function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
@@ -290,7 +296,6 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
     }
   }
 
-  // ⭐ UPDATED submitData() — sends values BACK into Copilot
   function submitData() {
     const type = document.getElementById('equipmentType').value;
     const lat = document.getElementById('latitude').value.trim();
@@ -301,16 +306,21 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
     if (!lat || isNaN(lat)) return alert('⚠️ Please enter a valid latitude.');
     if (!lon || isNaN(lon)) return alert('⚠️ Please enter a valid longitude.');
 
-    // ⭐ Your Copilot return URL (same conversation)
-    const returnUrl =
-      "https://copilotstudio.microsoft.com/environments/dd194fd0-e8e2-e02f-a14e-e7d710d3e313/copilots/fab4cfcf-f2b0-f011-bbd3-000d3a5be6d1/test"
-      + "?type=" + encodeURIComponent(type)
-      + "&lat=" + encodeURIComponent(lat)
-      + "&lon=" + encodeURIComponent(lon)
-      + "&radius=" + encodeURIComponent(rad);
+    document.getElementById('loadingScreen').style.display='flex';
+    const box = document.getElementById('outputBox');
 
-    // ⭐ Redirect user back to Copilot
-    window.location.href = returnUrl;
+    setTimeout(() => { 
+      document.getElementById('loadingScreen').style.display='none'; 
+      box.style.display = 'block';
+      box.style.borderLeft = '6px solid #2e8b57';
+      box.innerHTML = `
+        <strong style="color:#2e8b57; font-size:18px;">✓ Data Sent Successfully</strong><br><br>
+        Equipment Type: ${type}<br>
+        Latitude: ${lat}<br>
+        Longitude: ${lon}<br>
+        Radius: ${rad} ft
+      `;
+    }, 1200);
   }
 
   function toggleDark() {
@@ -319,6 +329,7 @@ z-index:10000; display:flex; align-items:center; justify-content:center; font-si
     document.getElementById('outputBox').classList.toggle('dark');
   }
 </script>
+
 
 <div id="loadingScreen">
   <div style="border:6px solid #ffffff; border-top:6px solid #b22222; border-radius:50%; width:60px; height:60px; animation:spin 1s linear infinite;"></div>
