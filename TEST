@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Custom Copilot Agent Chat</title>
+
+  <!-- Load WebChat -->
+  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+
+  <!-- Custom Styling -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #f4f4f7;
+      font-family: Segoe UI, sans-serif;
+    }
+
+    /* Wrapper to center chat */
+    #webchat-container {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Chat window */
+    #webchat {
+      width: 100%;
+      max-width: 550px;
+      height: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="webchat-container">
+    <div id="webchat"></div>
+  </div>
+
+  <script>
+    async function startChat() {
+      try {
+        // STEP 1 — Fetch Direct Line Token from your Copilot agent
+        const response = await fetch(
+          "https://dd194fd0e8e2e02fa14ee7d710d3e3.13.environment.api.powerplatform.com/powervirtualagents/botsbyschema/blank_agent_tq379/directline/token?api-version=2022-03-01-preview"
+        );
+
+        const { token } = await response.json();
+
+        // STEP 2 — Create WebChat with your custom styling
+        const styleOptions = {
+          // Remove extra padding and wasted space
+          rootHeight: "100%",
+          rootWidth: "100%",
+
+          // Make message bubbles cleaner
+          bubbleBorderRadius: 12,
+          bubbleBackground: "#ffffff",
+          bubbleFromUserBackground: "#d9eaff",
+
+          // Make input full width and modern
+          sendBoxBackground: "#ffffff",
+          sendBoxHeight: 55,
+          sendBoxTextWrap: true,
+
+          // Hide the ugly upload icon if you want
+          hideUploadButton: true,
+
+          // Make timestamps smaller
+          timestampFormat: "relative"
+        };
+
+        // STEP 3 — Initialize WebChat
+        window.WebChat.renderWebChat(
+          {
+            directLine: window.WebChat.createDirectLine({ token }),
+            styleOptions
+          },
+          document.getElementById("webchat")
+        );
+
+      } catch (err) {
+        console.error("Error loading chat:", err);
+      }
+    }
+
+    startChat();
+  </script>
+</body>
+</html>
